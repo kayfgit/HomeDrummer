@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Alert, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
-import DrumSet, { DRUMS, DrumType } from "../components/DrumSet";
+import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
+import DrumSet, { DrumType } from "../components/DrumSet";
 import SimilarityMeter from "../components/SimilarityMeter";
 import "../global.css";
 import { analysisEngine, AnalysisResult } from "../services/AnalysisEngine";
@@ -68,101 +68,81 @@ export default function Index() {
         setAppState("result");
     };
 
-    const handleReset = useCallback(() => {
-        setSelectedDrum(null);
-        setSimilarity(null);
-        setLastResult(null);
-        setAppState("idle");
-    }, []);
-
     const getInstructionText = (): string => {
         switch (appState) {
             case "idle":
-                return "Select a drum to match";
-            case "selecting":
-                return "Tap a drum component";
+                return "select a drum to match";
             case "recording":
-                return "Hit your object now!";
+                return "hit your object now!";
             case "analyzing":
-                return "Analyzing sound...";
+                return "analyzing...";
             case "result":
-                return "Tap the drum again to retry";
+                return "tap drum again to retry";
             default:
-                return "";
+                return "select a drum to match";
         }
     };
 
-    const selectedDrumInfo = selectedDrum
-        ? DRUMS.find((d) => d.id === selectedDrum)
-        : null;
-
     return (
-        <SafeAreaView className="flex-1 bg-primary">
+        <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="#1a1a2e" />
 
             {/* Header */}
-            <View className="px-6 pt-4 pb-2">
-                <Text className="text-3xl font-bold text-white text-center">
-                    HomeDrummer
-                </Text>
-                <Text className="text-gray-400 text-center mt-1">
-                    Find your rhythm everywhere
-                </Text>
-            </View>
-
-            {/* Instruction */}
-            <View className="px-6 py-4">
-                <View className="bg-secondary rounded-2xl px-4 py-3">
-                    <Text className="text-white text-center text-lg">
-                        {getInstructionText()}
-                    </Text>
-                    {selectedDrumInfo && appState !== "idle" && (
-                        <Text
-                            className="text-center mt-1 font-medium"
-                            style={{ color: selectedDrumInfo.color }}
-                        >
-                            Target: {selectedDrumInfo.label}
-                        </Text>
-                    )}
-                </View>
+            <View style={styles.header}>
+                <Text style={styles.title}>HomeDrummer</Text>
+                <Text style={styles.subtitle}>{getInstructionText()}</Text>
             </View>
 
             {/* Drum Set */}
-            <View className="flex-1 justify-center">
+            <View style={styles.drumContainer}>
                 <DrumSet
                     selectedDrum={selectedDrum}
                     onSelectDrum={handleSelectDrum}
                     disabled={appState === "recording" || appState === "analyzing"}
+                    accuracy={appState === "result" ? similarity : null}
                 />
             </View>
 
             {/* Similarity Meter */}
-            <View className="bg-secondary mx-4 rounded-2xl mb-4">
+            <View style={styles.meterContainer}>
                 <SimilarityMeter
                     similarity={appState === "result" ? similarity : null}
                     isRecording={appState === "recording"}
-                    drumLabel={selectedDrumInfo?.label}
                 />
-            </View>
-
-            {/* Reset Button */}
-            {(appState === "result" || selectedDrum) && (
-                <TouchableOpacity
-                    onPress={handleReset}
-                    className="mx-6 mb-6 bg-accent py-4 rounded-xl"
-                >
-                    <Text className="text-white text-center font-semibold text-lg">
-                        Start Over
-                    </Text>
-                </TouchableOpacity>
-            )}
-
-            {/* Footer */}
-            <View className="pb-4">
-                <Text className="text-gray-500 text-center text-xs">
-                    Tap a drum, then hit an object with a stick
-                </Text>
             </View>
         </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#1a1a2e",
+    },
+    header: {
+        marginTop: 30,
+        paddingTop: 20,
+        paddingHorizontal: 24,
+        alignItems: "center",
+    },
+    title: {
+        fontSize: 38,
+        fontWeight: "300",
+        color: "#ffffff",
+        fontStyle: "italic",
+        letterSpacing: 1,
+    },
+    subtitle: {
+        fontSize: 14,
+        color: "#9ca3af",
+        marginTop: 4,
+    },
+    drumContainer: {
+        flex: 1,
+        justifyContent: "center",
+        paddingHorizontal: 16,
+    },
+    meterContainer: {
+        paddingBottom: 40,
+    },
+});
