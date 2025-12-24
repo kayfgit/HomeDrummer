@@ -1,1 +1,37 @@
-This will be a mobile app that allows you to find household objects and use them as drumming equipment, the objective of the app is to check if the object's pitch and sound match those of a drum set, for example the main screen will have a drum set that users can press on each component like the snare drum, then hold the phone next to a object and hit it with a drumstick, the app would then match the sound and tell if the object is suitable for the snare sound, kind of like a tuning app for guitars but instead of tuning it, it identifies similar sounds for the drum. Make sure everything is type-safe and organized as we will add more features later on. Use expo and nativewind and also remember to make it beautiful and minimalistic as it will be a simple app with one especific goal.
+# HomeDrummer 🥁
+
+Find your rhythm everywhere. HomeDrummer helps you turn the world into your drum kit by identifying household objects that match the sound characteristics of real drum components.
+
+## Features ✨
+
+*   **Sound Matching**: Advanced audio analysis compares the pitch and timbre of your objects against professional drum samples.
+*   **Component Selection**: Target specific drum parts including:
+    *   Snare Drum
+    *   Kick Drum
+    *   Hi-Hat (Closed/Open)
+    *   Tom-Toms
+    *   Cymbals
+*   **Visual Feedback**: Instant similarity scoring lets you know how close your object sounds to the real thing.
+*   **Minimalist Design**: A sleek, focused dark mode interface that looks as good as it sounds.
+
+## Technology Stack 🛠️
+
+*   **Core**: React Native, Expo, TypeScript
+*   **Styling**: NativeWind (Tailwind CSS)
+*   **Audio**: Expo AV, fft-js (Fast Fourier Transform)
+*   **Animations**: React Native Reanimated
+
+## Getting Started
+
+1.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+2.  **Start the app**:
+    ```bash
+    npx expo start
+    ```
+3.  **Use the app**:
+    *   Select a target drum from the kit.
+    *   Hit a household object (table, box, book, etc.).
+    *   See the similarity score and adjust!
